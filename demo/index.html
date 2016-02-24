@@ -15,34 +15,76 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <title>epic-tile Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../epic-tile.html">
+    <style>
+      html, body{
+        height: 100%;
+      }
+      body {
+        background-color: #eee;
+        height: 100%;
+      }
+
+      .fit-container{
+       
+       width: 200px;
+       height: 300px;
+
+      }
+
+      epic-tile.basic {
+        background-color: #fff;
+      }
+
+
+    </style>
   </head>
   <body unresolved>
-
-    <p>An example of <code>&lt;epic-tile&gt;</code>:</p>
-
-    <p>Make words! <button id="saybtn">Say Something</button></p>
-    <p>Make lasers! <button id="laserbtn">Fire lasers</button></p>
-
-    <epic-tile author='{"name": "Lord Meowser", "image": "http://placekitten.com/g/200/300"}' fancy>
-      <h2>Hello epic-tile</h2>
+    
+    <epic-tile 
+      image-position="background" 
+        image="https://images.contentful.com/1kzutnf7jc3r/6PUfPVi3G8aSKakKsUKS8s/ccc617a370f10f23767ba92557495bdd/DCP_Landing_Page.jpg">
+<!--       <img primary src="https://images.contentful.com/1kzutnf7jc3r/6PUfPVi3G8aSKakKsUKS8s/ccc617a370f10f23767ba92557495bdd/DCP_Landing_Page.jpg"> -->
+      <h3 header>DAVID "DCP" PORCHERON</h3>
+      <p meta>Whistler</p>
     </epic-tile>
 
-    <script>
-      var seedElement = document.querySelector('epic-tile');
-      
-      document.querySelector('#saybtn').addEventListener('click', function() {
-        alert(seedElement.sayHello('Hallo!'));
-      });
-      
-      document.querySelector('#laserbtn').addEventListener('click', function() {
-        seedElement.fireLasers();
-      });
-      
-      document.addEventListener("epic-tile-lasers", function(e) {
-        console.log(e.detail.sound);
-      });
-      
-    </script>
+    <epic-tile class="basic">
+      <h1>Show Us Your Home Mountain</h1>
+      <p>As skiers and snowboarders, we have deep allegiances to our home 
+      mountains and all they offer. They shape our riding, our style, our friends, 
+      and our lives. That’s a huge part of why ZEAL is proudly based in Boulder, Colorado 
+      with a world of options right out our backdoor.</p>
+
+      <p>This winter, we’ve teamed up with a select crew of ZEAL Ambassadors to celebrate 
+      their hometown hills and why they’ve put down roots there. From the craggy Alps, to the 
+      Colorado sidecountry, our skiers and riders will take you behind the scenes 
+      of their stomping grounds.</p>
+    </epic-tile>
+
+    <epic-tile class="basic" vertical-position="center">
+      <h2>WIN A CAT TRIP AT OURS!</h2>
+      <p>Tell us what makes your home mountain magical for a chance to win a trip for two to 
+      Colorado including a cat trip with Weston Snowboards, two nights of lodging at Copper 
+      Mountain, four lift tickets and four passes to the Woodward At Copper Barn.</p>
+      <p><a href="https://www.facebook.com/zealoptics/app/451684954848385/">Enter to Win</a></p>
+    </epic-tile>
+    
+    <div class="fit-container">
+
+      <epic-tile class="basic" vertical-position="center" fit>
+        <h1>Show Us Your Home Mountain</h1>
+        <p>As skiers and snowboarders, we have deep allegiances to our home 
+        mountains and all they offer. They shape our riding, our style, our friends, 
+        and our lives. That’s a huge part of why ZEAL is proudly based in Boulder, Colorado 
+        with a world of options right out our backdoor.</p>
+
+        <p>This winter, we’ve teamed up with a select crew of ZEAL Ambassadors to celebrate 
+        their hometown hills and why they’ve put down roots there. From the craggy Alps, to the 
+        Colorado sidecountry, our skiers and riders will take you behind the scenes 
+        of their stomping grounds.</p>
+      </epic-tile>
+
+    </div>
 
   </body>
 </html>

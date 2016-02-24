@@ -8,6 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-image/iron-image.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -28,23 +29,193 @@ Example:
       :host {
         display: block;
         box-sizing: border-box;
+        position:relative;
+        width: auto;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
       }
-  
-      .author img {
+
+      :host, :host * {
+        box-sizing: border-box;
+        position:relative;
+      }
+      
+      /* allows the tile to stretch to the size of an empty parent container */
+      :host[fit] {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      :host .cover-image{
+        width: 100%;
+        height: 100%;
+        background-color: lightgray;
+      }
+
+      :host > .container {
         display: block;
-        float: left;
-        margin-right: 5px;
-        max-height: 100px;
-        max-width: 100px;
+        box-sizing: border-box;
+        position:relative;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+
+        padding: 1.5em; /* This should be a variable */
+      }
+
+      :host[contentYOrigin='start'] > .container {
+        align-items: flex-start;
+      }
+
+      :host[contentYOrigin='center'] > .container {
+        align-items: center;
+      }
+
+      :host[contentYOrigin='end'] > .container {
+        align-items: flex-end;
+      }
+
+      :host[contentYOrigin='baseline'] > .container {
+        align-items: baseline;
+      }
+
+      :host[contentYOrigin='stretch'] > .container {
+        align-items: stretch;
+      }
+
+      :host[contentXOrigin='start'] > .container {
+        justify-content: flex-start;
+      }
+
+      :host[contentXOrigin='center'] > .container {
+        justify-content: center;
+      }
+
+      :host[contentXOrigin='end'] > .container {
+        justify-content: flex-end;
+      }
+
+      :host > .container > .content {
+        display: block;
+        box-sizing: border-box;
+        position:relative;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      :host > .container > .content ::content > *:first-child,
+      :host > .container > .content > header ::content > *:first-child,
+      :host > .container > .content > footer ::content > *:first-child {
+        margin-top: 0;
+      }
+
+      :host > .container > .content ::content > *:last-child,
+      :host > .container > .content > header ::content > *:last-child,
+      :host > .container > .content > footer ::content > *:last-child {
+        margin-bottom: 0;
+      }
+
+      :host ::content img {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        max-width: 100%;
+        background-color: transparent;
+      }      
+
+      :host > .shim {
+        position: absolute;
+        display: inline-block;
+        width:100%;
+        height: 100%;
+        top:0;
+        left: 0;
+        background-color: rgba(0,0,0,.75);
+      }
+
+      /*******************************
+       Media Queries
+      ********************************/
+
+      /* mobile-large */
+      @media all and (min-width: 361px) { 
+        
+      }
+      
+      /* mobile-large-landscape */
+      @media all and (min-width: 481px) { 
+
+      }
+      /* tablet-small-landscape */
+      @media all and (min-width: 600px) { 
+        
+        :host > .container {
+          padding: 3em; /* This should be a variable */
+        }
+
+      }
+      /* desktop-medium-landscape */
+      @media all and (min-width: 841px) { 
+
+      }
+      /* tablet-large-landscape */
+      @media all and (min-width: 961px) { 
+
+      }
+      /* desktop-medium */
+      @media all and (min-width: 1281px) { 
+
+      }
+      /* desktop-xlarge */
+      @media all and (min-width: 1601px) { 
+
       }
     </style>
-    <h1>&lt;epic-tile&gt;</h1>
-    <content></content>
-    <p class="author">
-      <img src="{{author.image}}">
-      Cheers,<br/>
-      <span class="name">{{author.name}}</span>
-    </p>
+    
+    <template is="dom-if" if="{{image}}">
+      <iron-image class="cover-image"
+        sizing="cover" 
+        preload 
+        fade 
+        width="{{width}}"
+        height="{{height}}"
+        src="{{image}}"></iron-image>
+    </template>
+
+<!--     <template is="dom-if" if="{{image}}">
+      <div class="shim"></div>
+    </template> -->
+
+    <div class="container">
+
+      <div class="content">
+        <header>
+          <content select="*[preheader]"></content>
+          <content select="*[header]"></content>
+          <content select="*[meta]"></content>
+        </header>
+        <content></content>
+        <footer>
+          <content select="footer"></content>
+        </footer>
+      </div>
+    </div>
   </template>
 
 </dom-module>
@@ -58,35 +229,46 @@ Example:
     properties: {
 
       /**
-       * `fancy` indicates that the element should don a monocle and tophat,
-       * while checking its pocket watch.
+       * `contentXOrigin` indicates how the content box should be positioned within the tile.
+       * Possible values include 'start', 'center', 'end', 'stetch', 'baseline'.
        */
-      fancy: Boolean,
+      horizontalPosition: {
+         type: String,
+         value: 'top',
+         notify: true,
+      },
 
       /**
-       * Describes the author of the element, but is really just an excuse to
-       * show off JSDoc annotations.
-       *
-       * @type {{name: string, image: string}}
+       * `verticalPosition` indicates how the content box should be positioned within the tile.
+       * Possible values include 'start', 'center', 'end', 'stetch', 'baseline'.
        */
-      author: {
-        type: Object,
-        // Use `value` to provide a default value for a property, by setting it
-        // on your element's prototype.
-        //
-        // If you provide a function, as we do here, Polymer will call that
-        // _per element instance_.
-        //
-        // We do that to ensure that each element gets its own copy of the
-        // value, rather than having it shared across all instances (via the
-        // prototype).
-        value: function() {
-          return {
-            name:  'Dimitri Glazkov',
-            image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
-          };
-        }
+       verticalPosition: {
+         type: String,
+         value: 'top',
+         notify: true,
       },
+
+      /**
+       * `verticalPosition` indicates how the content box should be positioned within the tile.
+       * Possible values include 'start', 'center', 'end', 'stetch', 'baseline'.
+       */
+       image: {
+         type: String,
+         notify: true,
+         reflectToAttribute: true
+      },
+
+      height: {
+        type: String,
+        notify: true,
+        reflectToAttribute: false
+      },
+
+      width: {
+        type: String,
+        notify: true,
+        reflectToAttribute: false
+      }
 
     },
 
@@ -99,15 +281,29 @@ Example:
       //
       // This is the point where you should make modifications to the DOM (when
       // necessary), or kick off any processes the element wants to perform.
+      
+//       console.log(Polymer.dom(this.root).host.clientHeight);
+//       console.log(Polymer.dom(this.root).host.clientWidth);
     },
 
     attached: function() {
+      if (!this.height){
+        this.height = Polymer.dom(this).node.clientHeight;
+        console.log(this.height);  
+      }
+
+      if (!this.width){
+        this.width = Polymer.dom(this).node.clientWidth;  
+        console.log(this.width);
+      }
+
       // `attached` fires once the element and its parents have been inserted
       // into a document.
       //
       // This is a good place to perform any work related to your element's
       // visual state or active behavior (measuring sizes, beginning animations,
       // loading resources, etc).
+
     },
 
     detached: function() {
