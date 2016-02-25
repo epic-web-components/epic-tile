@@ -149,6 +149,7 @@ Example:
         background-color: rgba(0,0,0,.75);
       }
 
+
       /*******************************
        Media Queries
       ********************************/
@@ -288,12 +289,12 @@ Example:
 
     attached: function() {
       if (!this.height){
-        this.height = Polymer.dom(this).node.clientHeight;
+        // this.height = Polymer.dom(this).node.clientHeight;
         console.log(this.height);  
       }
 
       if (!this.width){
-        this.width = Polymer.dom(this).node.clientWidth;  
+        // this.width = Polymer.dom(this).node.clientWidth;
         console.log(this.width);
       }
 
